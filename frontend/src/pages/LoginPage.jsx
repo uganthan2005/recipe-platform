@@ -18,9 +18,13 @@ const LoginPage = () => {
         try {
             const res = await axios.post('/api/auth/login', formData);
             dispatch(login({ user: res.data.user, token: res.data.token }));
-            navigate('/dashboard');
+            navigate('/recipes');
         } catch (err) {
-            setError(err.response?.data?.error || 'Login failed');
+            if (err.code === 'ERR_NETWORK') {
+                setError('Network error: Is the backend server running and its IP whitelisted?');
+            } else {
+                setError(err.response?.data?.error || 'Login failed');
+            }
         } finally {
             setIsLoading(false);
         }

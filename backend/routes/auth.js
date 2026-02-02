@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
 const User = require('../models/User');
 
 // Signup route
@@ -21,6 +22,11 @@ router.post('/signup', async (req, res) => {
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
   try {
+    // Check connection state
+    if (mongoose.connection.readyState !== 1) {
+      return res.status(503).json({ error: 'Database connection is not ready. Please check if your deployment IP is whitelisted in MongoDB Atlas.' });
+    }
+
     const user = await User.findOne({ email });
     if (!user) return res.status(404).json({ error: 'User not found' });
 
@@ -30,7 +36,8 @@ router.post('/login', async (req, res) => {
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET || 'your_jwt_secret', { expiresIn: '1h' });
     res.json({ token, user: { id: user._id, username: user.username, email: user.email } });
   } catch (error) {
-    res.status(500).json({ error: 'Error logging in' });
+    console.error('Login Error:', error);
+    res.status(500).json({ error: 'Internal Server Error during login' });
   }
 });
 
