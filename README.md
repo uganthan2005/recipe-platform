@@ -90,6 +90,25 @@ recipe-platform/
 └── README.md
 ```
 
+## Deployment
+
+### Deploy to Render
+
+This application is ready to deploy on Render. See the [Render Deployment Guide](https://github.com/YOUR_USERNAME/recipe-platform/blob/main/DEPLOYMENT.md) for detailed instructions.
+
+**Quick Overview:**
+- **Backend**: Deploy as Web Service (Node.js)
+- **Frontend**: Deploy as Static Site (Vite)
+- **Database**: MongoDB Atlas (free tier available)
+
+**Required Environment Variables:**
+- Backend: `MONGO_URI`, `JWT_SECRET`, `GEMINI_API_KEY`
+- Frontend: `VITE_API_URL`
+
+**Live Demo:**
+- Frontend: https://recipe-platform-frontend.onrender.com
+- Backend: https://recipe-platform-backend.onrender.com
+
 ## Getting Started
 
 ### Prerequisites
