@@ -1,105 +1,227 @@
-# Recipe Recommendation Platform
+# Recipe Platform 🍳
 
-## Overview
-This is a personalized recipe recommendation platform that suggests meals based on user preferences, available ingredients, dietary restrictions, and nutritional goals. The application uses AI to provide smart recipe suggestions, ingredient substitutions, and meal planning assistance.
+A full-stack recipe sharing and meal planning platform with social features, inventory management, and AI-powered recipe recommendations.
 
 ## Features
 
-### Backend
-- **Technologies**: Node.js, Express, MongoDB
-- **Features**:
-  - User authentication with JWT
-  - Recipe database with search and filters
-  - User profiles with dietary preferences and restrictions
-  - API for AI-powered features
+### 🍽️ Recipe Management
+- Create, edit, and share recipes
+- Upload recipe images
+- Add ingredients and cooking instructions
+- Like and comment on recipes
+- Save favorite recipes
+
+### 📅 Meal Planner
+- Weekly meal planning grid (7 days × 3 meals)
+- Click to add recipes to any meal slot
+- Save multiple meal plans
+- Load and edit existing plans
+- Delete old meal plans
+- Invite collaborators to shared meal plans
+
+### 👥 Social Features
+- Follow/unfollow users
+- Discovery feed with random recipes
+- User profiles with posts and stats
+- Persistent follow relationships across sessions
+- User suggestions
+
+### 📦 Inventory Management
+- Track kitchen ingredients
+- Manual inventory addition
+- Barcode scanning (with camera integration)
+- AI-powered recipe recommendations based on available ingredients
+
+### 🤖 AI Integration
+- Recipe recommendations based on inventory
+- Smart ingredient matching
+- Powered by Google Gemini AI
+
+## Tech Stack
 
 ### Frontend
-- **Technologies**: React.js, Tailwind CSS
-- **Features**:
-  - Intuitive and responsive UI
-  - Recipe search and display
-  - User profile management
-  - Meal planning and inventory tracking
-
-### AI Features
-- Personalized recipe recommendations based on user history and preferences
-- Ingredient substitution suggestions for dietary restrictions
-- Nutritional analysis and meal optimization
-- Image recognition for identifying ingredients from photos
-
-## Installation
+- **React** - UI framework
+- **Redux Toolkit** - State management
+- **React Router** - Navigation
+- **Axios** - HTTP client
+- **Vite** - Build tool
+- **Tailwind CSS** - Styling
+- **Lucide React** - Icons
 
 ### Backend
-1. Navigate to the `backend` directory:
+- **Node.js** - Runtime
+- **Express** - Web framework
+- **MongoDB** - Database
+- **Mongoose** - ODM
+- **bcryptjs** - Password hashing
+- **JWT** - Authentication
+- **Google Generative AI** - AI recommendations
+
+## Project Structure
+
+```
+recipe-platform/
+├── backend/
+│   ├── models/          # MongoDB schemas
+│   │   ├── User.js
+│   │   ├── Recipe.js
+│   │   ├── MealPlan.js
+│   │   └── Inventory.js
+│   ├── routes/          # API endpoints
+│   │   ├── auth.js
+│   │   ├── recipes.js
+│   │   ├── social.js
+│   │   ├── mealPlanner.js
+│   │   ├── inventory.js
+│   │   └── ai.js
+│   ├── seed.js          # Database seeding
+│   ├── index.js         # Server entry point
+│   └── .env             # Environment variables
+│
+├── frontend/
+│   ├── src/
+│   │   ├── components/  # Reusable components
+│   │   ├── pages/       # Page components
+│   │   ├── store/       # Redux store
+│   │   ├── App.jsx      # Main app component
+│   │   └── main.jsx     # Entry point
+│   └── index.html
+│
+└── README.md
+```
+
+## Getting Started
+
+### Prerequisites
+- Node.js (v14 or higher)
+- MongoDB (local or Atlas)
+- Google Gemini API key
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd recipe-platform
+   ```
+
+2. **Backend Setup**
    ```bash
    cd backend
-   ```
-2. Install dependencies:
-   ```bash
    npm install
    ```
-3. Start the server:
+
+3. **Create `.env` file in backend directory**
+   ```env
+   MONGO_URI=your_mongodb_connection_string
+   JWT_SECRET=your_jwt_secret_key
+   GEMINI_API_KEY=your_google_gemini_api_key
+   PORT=5000
+   ```
+
+4. **Seed the database (optional)**
+   ```bash
+   node seed.js
+   ```
+
+5. **Start backend server**
    ```bash
    npm run dev
    ```
 
-### Frontend
-1. Navigate to the `frontend` directory:
+6. **Frontend Setup** (in a new terminal)
    ```bash
    cd frontend
-   ```
-2. Install dependencies:
-   ```bash
    npm install
-   ```
-3. Start the development server:
-   ```bash
-   npm start
-   ```
-
-## Usage
-1. Open the frontend in your browser at `http://localhost:3000`.
-2. Use the platform to search for recipes, manage your pantry, and plan meals.
-
-## Testing and Debugging
-
-### Running the Application
-
-1. Start the backend server:
-   ```bash
-   cd backend
    npm run dev
    ```
-   The backend server will run on `http://localhost:5000`.
 
-2. Start the frontend development server:
-   ```bash
-   cd frontend
-   npm start
-   ```
-   The frontend will be available at `http://localhost:3000`.
+7. **Access the application**
+   - Frontend: http://localhost:5173
+   - Backend: http://localhost:5000
 
-### Testing
-- Test the user authentication by signing up and logging in.
-- Test the recipe search and CRUD operations.
-- Test the AI-powered features by providing user preferences and ingredients.
-- Test inventory management by adding, updating, and deleting items.
-- Test social features by sharing recipes and following users.
+## Test Credentials
 
-### Debugging
-- Check the browser console for frontend errors.
-- Monitor the backend server logs for API errors.
-- Use tools like Postman to test API endpoints.
+After running the seed script, you can use these test accounts:
 
-## Additional Notes
-- Ensure MongoDB is running locally or update the connection string in `backend/index.js` to point to your MongoDB instance.
-- Replace `your_jwt_secret` in `backend/index.js` with a secure secret key.
-- Tailwind CSS is used for styling. Customize the `tailwind.config.js` file as needed.
+| Username | Email | Password |
+|----------|-------|----------|
+| ChefMario | mario@example.com | password123 |
+| HealthyHannah | hannah@example.com | password123 |
+| GrillMaster | grill@example.com | password123 |
+| BakingBetty | betty@example.com | password123 |
+| SpicySam | sam@example.com | password123 |
 
-## Future Enhancements
-- Implement barcode scanning for inventory management.
-- Enhance AI features with machine learning models.
-- Add more social features, such as comments and likes on recipes.
+## API Endpoints
+
+### Authentication
+- `POST /api/auth/register` - Register new user
+- `POST /api/auth/login` - Login user
+
+### Recipes
+- `GET /api/recipes` - Get all recipes
+- `GET /api/recipes/:id` - Get single recipe
+- `POST /api/recipes` - Create recipe
+- `PUT /api/recipes/:id` - Update recipe
+- `DELETE /api/recipes/:id` - Delete recipe
+
+### Social
+- `POST /api/social/follow/:id` - Follow user
+- `POST /api/social/unfollow/:id` - Unfollow user
+- `GET /api/social/feed/:userId` - Get discovery feed
+- `GET /api/social/profile/:id` - Get user profile
+- `POST /api/social/like/:recipeId` - Like/unlike recipe
+- `POST /api/social/comment/:recipeId` - Comment on recipe
+
+### Meal Planner
+- `GET /api/mealplanner/user/:userId/all` - Get all meal plans
+- `GET /api/mealplanner/plan/:planId` - Get specific meal plan
+- `POST /api/mealplanner` - Create/update meal plan
+- `DELETE /api/mealplanner/:id` - Delete meal plan
+- `POST /api/mealplanner/:id/invite` - Invite collaborator
+
+### Inventory
+- `GET /api/inventory/:userId` - Get user inventory
+- `POST /api/inventory/add` - Add item to inventory
+- `DELETE /api/inventory/remove/:userId/:itemName` - Remove item
+
+### AI
+- `POST /api/ai/recommend` - Get AI recipe recommendations
+
+## Features in Detail
+
+### Meal Planner
+- **Grid View**: 7 days × 3 meals (Breakfast, Lunch, Dinner)
+- **Recipe Selection**: Click any slot to open recipe selector modal
+- **Multiple Plans**: Save and manage multiple meal plans
+- **Persistence**: All plans saved to MongoDB
+- **Collaboration**: Invite other users to shared plans
+
+### Follow System
+- **Persistent**: Follows saved to database, not session
+- **Bi-directional**: Updates both users' follower/following arrays
+- **Real-time UI**: Optimistic updates for instant feedback
+- **Profile Integration**: Follow/unfollow from user profiles
+
+### Inventory Management
+- **Manual Entry**: Add items with name and quantity
+- **Barcode Scanning**: Use camera to scan product barcodes
+- **AI Recommendations**: Get recipe suggestions based on available ingredients
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ## License
+
 This project is licensed under the MIT License.
+
+## Acknowledgments
+
+- Google Gemini AI for recipe recommendations
+- Unsplash for recipe images
+- Lucide for beautiful icons
