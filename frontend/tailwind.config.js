@@ -6,9 +6,34 @@ export default {
     ],
     theme: {
         extend: {
+            colors: {
+                primary: {
+                    DEFAULT: '#1e40af', // Deep Blue
+                    light: '#3b82f6',
+                    dark: '#1e3a8a',
+                },
+                secondary: {
+                    DEFAULT: '#64748b', // Slate
+                    light: '#f1f5f9',
+                    dark: '#334155',
+                },
+                accent: '#f59e0b', // Amber
+                background: '#f8fafc', // Slate 50
+                surface: '#ffffff',
+                text: {
+                    DEFAULT: '#1e293b',
+                    light: '#64748b',
+                }
+            },
             animation: {
-                'ping-short': 'ping 0.5s cubic-bezier(0, 0, 0.2, 1) 1',
-            }
+                'fade-in': 'fadeIn 0.3s ease-out',
+            },
+            keyframes: {
+                fadeIn: {
+                    '0%': { opacity: '0' },
+                    '100%': { opacity: '1' },
+                },
+            },
         },
     },
     plugins: [],

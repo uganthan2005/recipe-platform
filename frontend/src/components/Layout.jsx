@@ -2,7 +2,6 @@ import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../store/authSlice';
-import { ChefHat, List, Utensils, Home as HomeIcon, User, LogOut, LogIn, Calendar, Users } from 'lucide-react';
 
 const Layout = ({ children }) => {
     const location = useLocation();
@@ -16,70 +15,68 @@ const Layout = ({ children }) => {
     };
 
     const navItems = [
-        { path: '/', icon: <HomeIcon size={20} />, label: 'Home' },
-        { path: '/dashboard', icon: <User size={20} />, label: 'Dashboard' },
-        { path: '/inventory', icon: <List size={20} />, label: 'Inventory' },
-        { path: '/recipes', icon: <Utensils size={20} />, label: 'Recipes' },
-        { path: '/meal-planner', icon: <Calendar size={20} />, label: 'Meal Plan' },
-        { path: '/social', icon: <Users size={20} />, label: 'Social' },
+        { path: '/inventory', label: 'Inventory' },
+        { path: '/recipes', label: 'Recipes' },
+        { path: '/meal-planner', label: 'Meal Plan' },
+        { path: '/social', label: 'Social' },
     ];
 
     return (
-        <div className="min-h-screen bg-gray-50 flex flex-col">
-            <header className="bg-white shadow-sm sticky top-0 z-10">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex justify-between h-16 items-center">
-                        <div className="flex items-center">
-                            <ChefHat className="text-orange-500 mr-2" size={28} />
-                            <h1 className="text-xl font-bold text-gray-900 tracking-tight">KitchenMate</h1>
+        <div className="min-h-screen bg-gray-100 flex flex-col">
+            <header className="bg-white border-b border-gray-300">
+                <div className="max-w-7xl mx-auto px-4">
+                    <div className="flex justify-between h-14 items-center">
+                        <div className="flex items-center gap-2">
+                            <h1 className="text-xl font-bold text-gray-900">Recipe Platform</h1>
                         </div>
-                        <nav className="hidden md:flex space-x-8">
+
+                        <nav className="hidden md:flex items-center gap-1">
                             {navItems.map((item) => (
                                 <Link
                                     key={item.path}
                                     to={item.path}
-                                    className={`flex items-center px-1 pt-1 text-sm font-medium border-b-2 ${location.pathname === item.path
-                                        ? 'border-orange-500 text-gray-900'
-                                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                                    className={`px-3 py-1 text-sm font-medium ${location.pathname === item.path
+                                            ? 'bg-gray-800 text-white'
+                                            : 'text-gray-700 hover:bg-gray-200'
                                         }`}
                                 >
-                                    <span className="mr-2">{item.icon}</span>
                                     {item.label}
                                 </Link>
                             ))}
+                            <div className="h-6 w-px bg-gray-300 mx-2"></div>
                             {isAuthenticated ? (
                                 <button
                                     onClick={handleLogout}
-                                    className="flex items-center px-1 pt-1 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-red-600"
+                                    className="px-3 py-1 text-sm font-medium text-red-600 hover:bg-red-100"
                                 >
-                                    <LogOut className="mr-2" size={20} /> Logout
+                                    Logout
                                 </button>
                             ) : (
-                                <Link to="/login" className="flex items-center px-1 pt-1 text-sm font-medium text-orange-600 hover:text-orange-500">
-                                    <LogIn className="mr-2" size={20} /> Login
+                                <Link
+                                    to="/login"
+                                    className="px-3 py-1 text-sm font-medium bg-gray-800 text-white hover:bg-gray-700"
+                                >
+                                    Login
                                 </Link>
                             )}
                         </nav>
-                        {/* Mobile Menu Button would go here */}
                     </div>
                 </div>
             </header>
-            <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                {children}
+
+            <main className="flex-1 max-w-7xl w-full mx-auto px-4 py-6">
+                <div className="bg-white border border-gray-300 p-6 min-h-[calc(100vh-10rem)]">
+                    {children}
+                </div>
             </main>
-            <nav className="md:hidden fixed bottom-0 w-full bg-white border-t border-gray-200 flex justify-around py-3 pb-safe">
-                {navItems.map((item) => (
-                    <Link
-                        key={item.path}
-                        to={item.path}
-                        className={`flex flex-col items-center p-1 ${location.pathname === item.path ? 'text-orange-500' : 'text-gray-400'
-                            }`}
-                    >
-                        {item.icon}
-                        <span className="text-xs mt-1">{item.label}</span>
-                    </Link>
-                ))}
-            </nav>
+
+            <footer className="bg-white border-t border-gray-300 py-4">
+                <div className="max-w-7xl mx-auto px-4 text-center">
+                    <p className="text-xs text-gray-500">
+                        © 2026 Recipe Platform
+                    </p>
+                </div>
+            </footer>
         </div>
     );
 };

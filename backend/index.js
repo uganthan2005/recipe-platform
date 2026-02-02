@@ -28,15 +28,32 @@ app.use(cors({
 }));
 app.use(express.json());
 
+// Request Logger (Alignment with "Internal Platform" theme)
+app.use((req, res, next) => {
+  const timestamp = new Date().toISOString();
+  console.log(`[${timestamp}] ${req.method} ${req.path}`);
+  next();
+});
+
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/recipe-platform', {
   useNewUrlParser: true,
   useUnifiedTopology: true
-}).then(() => console.log('MongoDB connected')).catch(err => console.error(err));
+}).then(() => {
+  console.log('[DATABASE] MongoDB Connection Established');
+}).catch(err => {
+  console.error('[DATABASE] Connection Error:');
+  if (err.message.includes('MongooseServerSelectionError')) {
+    console.error('  CRITICAL: Potential IP Whitelisting issue on MongoDB Atlas.');
+    console.error('  Please ensure your current IP is allowed in Network Access.');
+  } else {
+    console.error(err);
+  }
+});
 
 // Routes
 app.get('/', (req, res) => {
-  res.send('Welcome to the Recipe Platform Backend!');
+  res.send('Welcome to the KitchenMate Internal API!');
 });
 
 app.use('/api/auth', require('./routes/auth'));
@@ -48,5 +65,5 @@ app.use('/api/mealplanner', require('./routes/mealPlanner'));
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`[STATUS] KitchenMate Backend Active on http://localhost:${PORT}`);
 });

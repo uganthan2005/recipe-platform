@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchInventory, addItem } from '../store/inventorySlice';
-import { Plus, Trash, Scan } from 'lucide-react';
 import ScannerModal from '../components/ScannerModal';
-
 import axios from 'axios';
 
 const InventoryPage = () => {
@@ -12,8 +10,6 @@ const InventoryPage = () => {
     const { user } = useSelector((state) => state.auth);
     const [isManualOpen, setIsManualOpen] = useState(false);
     const [manualItem, setManualItem] = useState({ item: '', quantity: '1', expirationDate: '' });
-
-    // Restoring scanner logic
     const [isScannerOpen, setIsScannerOpen] = useState(false);
 
     useEffect(() => {
@@ -35,7 +31,7 @@ const InventoryPage = () => {
                 setIsScannerOpen(false);
             } catch (error) {
                 console.error("Scan failed:", error);
-                alert("Failed to process barcode. Please try again.");
+                alert("Failed to process barcode");
                 setIsScannerOpen(false);
             }
         }
@@ -55,48 +51,45 @@ const InventoryPage = () => {
             setManualItem({ item: '', quantity: '1', expirationDate: '' });
         } catch (error) {
             console.error("Add failed:", error);
-            alert("Failed to add item.");
+            alert("Failed to add item");
         }
     };
 
-
     return (
         <div>
-            <div className="flex justify-between items-center mb-6">
+            <div className="flex justify-between items-center mb-4">
                 <h2 className="text-2xl font-bold text-gray-800">My Pantry</h2>
                 <div className="flex gap-2">
                     <button
                         onClick={() => setIsManualOpen(true)}
-                        className="flex items-center gap-2 bg-white text-orange-600 border border-orange-200 px-4 py-2 rounded-lg hover:bg-orange-50 transition"
+                        className="bg-white text-gray-800 border border-gray-300 px-4 py-2 hover:bg-gray-100"
                     >
-                        <Plus size={20} /> Add
+                        + Add
                     </button>
                     <button
                         onClick={() => setIsScannerOpen(true)}
-                        className="flex items-center gap-2 bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition"
+                        className="bg-blue-600 text-white px-4 py-2 hover:bg-blue-700"
                     >
-                        <Scan size={20} /> Scan
+                        Scan
                     </button>
                 </div>
             </div>
 
-
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <div className="bg-white border border-gray-300">
                 {inventory.length === 0 ? (
-                    <div className="p-8 text-center text-gray-400">
-                        <Scan className="mx-auto mb-2 text-gray-300" size={48} />
+                    <div className="p-8 text-center text-gray-500">
                         <p>Pantry is empty. Start scanning or add items!</p>
                     </div>
                 ) : (
-                    <ul className="divide-y divide-gray-100">
+                    <ul className="divide-y divide-gray-200">
                         {inventory.map((item) => (
                             <li key={item._id} className="p-4 flex justify-between items-center hover:bg-gray-50">
                                 <div>
                                     <p className="font-medium text-gray-900">{item.item}</p>
-                                    <p className="text-sm text-gray-500">Qty: {item.quantity}</p>
+                                    <p className="text-sm text-gray-600">Qty: {item.quantity}</p>
                                 </div>
-                                <button className="text-red-400 hover:text-red-500">
-                                    <Trash size={18} />
+                                <button className="text-red-600 hover:text-red-700">
+                                    Delete
                                 </button>
                             </li>
                         ))}
@@ -109,10 +102,10 @@ const InventoryPage = () => {
             {/* Manual Add Modal */}
             {isManualOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="bg-white p-6 rounded-xl w-full max-w-md shadow-2xl transform transition-all">
+                    <div className="bg-white p-6 w-full max-w-md border border-gray-300">
                         <div className="flex justify-between items-center mb-4">
                             <h3 className="text-xl font-bold">Add Item Manually</h3>
-                            <button onClick={() => setIsManualOpen(false)} className="text-gray-400 hover:text-gray-600">✕</button>
+                            <button onClick={() => setIsManualOpen(false)} className="text-gray-600 hover:text-gray-800">✕</button>
                         </div>
                         <form onSubmit={handleManualAdd} className="space-y-4">
                             <div>
@@ -120,7 +113,7 @@ const InventoryPage = () => {
                                 <input
                                     type="text"
                                     required
-                                    className="w-full border border-gray-300 rounded-lg p-2 focus:ring-orange-500 focus:border-orange-500"
+                                    className="w-full border border-gray-300 p-2 focus:outline-none focus:border-gray-500"
                                     value={manualItem.item}
                                     onChange={e => setManualItem({ ...manualItem, item: e.target.value })}
                                     placeholder="e.g. Milk"
@@ -131,13 +124,13 @@ const InventoryPage = () => {
                                 <input
                                     type="text"
                                     required
-                                    className="w-full border border-gray-300 rounded-lg p-2 focus:ring-orange-500 focus:border-orange-500"
+                                    className="w-full border border-gray-300 p-2 focus:outline-none focus:border-gray-500"
                                     value={manualItem.quantity}
                                     onChange={e => setManualItem({ ...manualItem, quantity: e.target.value })}
                                     placeholder="e.g. 1 liter"
                                 />
                             </div>
-                            <button type="submit" className="w-full py-3 bg-orange-600 text-white rounded-lg font-bold hover:bg-orange-700 transition">
+                            <button type="submit" className="w-full py-2 bg-blue-600 text-white font-bold hover:bg-blue-700">
                                 Add to Pantry
                             </button>
                         </form>
@@ -147,4 +140,5 @@ const InventoryPage = () => {
         </div>
     );
 };
+
 export default InventoryPage;
